@@ -4,7 +4,7 @@ import logo from  '../images/ll-logo.png'
 function Navigation() {
     return (
       <>
-        <nav>
+        <nav className="main-nav">
             <img src={logo} alt="little lemon logo"/>
             <ul>
                 <li><a href="#">Home</a></li>
