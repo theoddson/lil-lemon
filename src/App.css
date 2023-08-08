@@ -185,6 +185,14 @@ footer h6{
 
 
 
+/* Booking Form */
+
+.booking-form{
+  display: flex;
+  flex-direction: column;
+}
+
+
 /* Existing styles */
 
 @media (prefers-reduced-motion: no-preference) {
