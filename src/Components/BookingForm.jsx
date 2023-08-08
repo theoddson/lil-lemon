@@ -2,23 +2,29 @@ import React, {useState} from "react";
 
 
 
-function BookingForm() {
+function BookingForm(props) {
 
-    const availableTimes = ['12:00','13:00','14:00','15:00','16:00','17:00']
+    
 
     const [booking, setBooking] = useState({
         date: '2023-07-08',
-        time: availableTimes[0],
+        time: '12:00',
         partySize: 1,
         occasion: 'Dining'
     })
 
     
-    const listItems = availableTimes.map((number, i) =>
+   
+    
+
+    const listItems = props.availableTimes.times.map((number, i) =>
         <option key={i}>{number}</option>
         );
+
     const handleSubmit = (e) => {
-        alert(booking.time)
+        props.updateTimes('update_times');
+        console.log('Times' + props.availableTimes.times)
+        console.log(props.availableTimes)
         e.preventDefault();
     }
 
