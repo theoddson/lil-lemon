@@ -10,8 +10,20 @@ const updateTimes = (availableTimes, date) => {
 };
 
 
-const initializeTimes = initialTimes =>
-  [...initialTimes, ...fetchAPI(new Date())];
+
+console.log('TEST' + updateTimes(['1:00','2:00'], '2023-07-18'))
+console.log('A ' + updateTimes([], '2023-07-18'))
+console.log('B ' + updateTimes([], '2023-07-19'))
+
+const initializeTimes = (initialTimes) =>{
+  return(
+    [...initialTimes, ...fetchAPI(new Date())]
+  );
+
+}
+
+
+
 
 
 function Reserve() {
