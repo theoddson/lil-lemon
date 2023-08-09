@@ -1,32 +1,35 @@
-import React, {useReducer, useState} from "react";
+import React, {useReducer, useState, useEffect} from "react";
 import Nav from '../Components/Navigation'
 import BookingForm from "../Components/BookingForm";
-import logo from  '../images/ll-logo.png'
+import {fetchAPI, submitAPI} from '../api'
+import { useNavigate } from "react-router-dom";
+
+const updateTimes = (availableTimes, date) => {
+  const response = fetchAPI(new Date(date));
+  return (response.length !== 0) ? response : [availableTimes];
+};
 
 
-
-const reducer = (state,action) => {
-  if(action.type == 'update_times') return {times: ['388:00']};
-  return state;
-}
-
+const initializeTimes = initialTimes =>
+  [...initialTimes, ...fetchAPI(new Date())];
 
 
 function Reserve() {
-  const initialState = {times:['9:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00']};
-  const [state,dispatch] = useReducer(reducer,initialState);
+  const [availableTimes,dispatch] = useReducer(updateTimes, [], initializeTimes);
   
-  const updateTimes = () => {
-    dispatch({type: 'update_times'})
-  }
-    
+  const navigate = useNavigate();
+  
+  const submitBooking = formData => {
+    const response = submitAPI(formData);
+    if (response) navigate("/confirmed");
+    console.log('hmm: ' + formData.occasion)
+  }; 
+
+  console.log('Is this an array? ' + Array.isArray(availableTimes))
     return (
       <>
-
         <Nav></Nav>
-        <input className="button" value="Testing Dispatch" onClick={() => dispatch({type: 'update_times'})} />
-        <BookingForm  updateTimes={dispatch} availableTimes={state}/>
-        
+        <BookingForm  dispatch={dispatch} availableTimes={availableTimes} submitBooking={submitBooking}/>
       </>
     );
   }

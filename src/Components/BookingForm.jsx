@@ -8,7 +8,7 @@ function BookingForm(props) {
 
     const [booking, setBooking] = useState({
         date: '2023-07-08',
-        time: '12:00',
+        time: props.availableTimes[0],
         partySize: 1,
         occasion: 'Dining'
     })
@@ -17,22 +17,23 @@ function BookingForm(props) {
    
     
 
-    const listItems = props.availableTimes.times.map((number, i) =>
+    const listItems = props.availableTimes?.map((number, i) =>
         <option key={i}>{number}</option>
         );
 
-    const handleSubmit = (e) => {
-        props.updateTimes('update_times');
-        console.log('Times' + props.availableTimes.times)
-        console.log(props.availableTimes)
-        e.preventDefault();
-    }
+        console.log('Passed times: ' + props.availableTimes)
+        console.log('Date: ' + booking.date + ', ' + 'Time: ' + booking.time) 
+        
+        const handleSubmit = (e) => {
+            e.preventDefault();
+            props.submitBooking({ ...booking});
+        }
 
     return (
         <form className="booking-form gap-24" onSubmit={handleSubmit}>
 
             <div>
-                <label for="res-date">Choose date</label>
+                <label htmlFor="res-date">Choose date</label>
                 <input type="date" id="res-date" 
                     value={booking.date} 
                     onChange={e => { 
@@ -40,6 +41,7 @@ function BookingForm(props) {
                             ...booking, 
                             date: e.target.value 
                         }); 
+                        props.dispatch(e.target.value);
                     }}
                 
                 />
@@ -47,7 +49,7 @@ function BookingForm(props) {
 
 
             <div>
-                <label for="res-time">Choose time</label>
+                <label htmlFor="res-time">Choose time</label>
                 <select id="res-time "
                     value={booking.time} 
                     onChange={e => { 
@@ -63,7 +65,7 @@ function BookingForm(props) {
             </div>
 
             <div>
-                <label for="partySize">Number of guests</label>
+                <label htmlFor="partySize">Number of guests</label>
                 <input 
                     type="number" 
                     placeholder="1" 
@@ -81,7 +83,7 @@ function BookingForm(props) {
             </div>
 
             <div>
-                <label for="occasion">Occasion</label>
+                <label htmlFor="occasion">Occasion</label>
                 <select id="occasion"
                     value={booking.occasion} 
                     onChange={e => { 
