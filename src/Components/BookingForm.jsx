@@ -1,7 +1,5 @@
 import React, {useState} from "react";
 
-
-
 function BookingForm(props) {
 
     const todayDate = new Date().toISOString().split('T')[0];
