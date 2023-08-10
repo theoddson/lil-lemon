@@ -5,13 +5,11 @@ import Testimonials from "./Testimonials";
 
 function Main() {
     return (
-      <>
-        <main className="section">
+        <main>
             <Specials />
             <AboutUs/>
             <Testimonials/>
         </main>
-      </>
     );
   }
   export default Main;
