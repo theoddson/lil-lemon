@@ -3,8 +3,7 @@ import React, {useState} from "react";
 function BookingForm(props) {
 
     const todayDate = new Date().toISOString().split('T')[0];
-    console.log('Min Date' + todayDate)
-
+    //console.log('Min Date' + todayDate)
     const [booking, setBooking] = useState({
         date: todayDate,
         time: props.availableTimes[0],
@@ -13,25 +12,32 @@ function BookingForm(props) {
     })
 
     //Form Validation, checking if fields all are valid
-    const isDateValid = () => booking.date !== '';
+    const isDateValid = () => booking.date !== '' && booking.date >= todayDate;
     const isTimeValid = () => booking.time !== '';
-    const isNumberOfGuestsValid = () => booking.partySize !== '' && booking.partySize > 0;
+    const isNumberOfGuestsValid = () => booking.partySize !== ''  && booking.partySize > 0;
     const isOccasionValid = () => booking.occasion !== '';
-
+    
+    
     const validateFields = () =>
       isDateValid()
       && isTimeValid()
       && isNumberOfGuestsValid()
       && isOccasionValid();
 
+      let errorTime =  !validateFields();
+      console.log('error Time?: ' + errorTime)
+
+
+    //console.log('Booking: ' +  booking.date + ' , Today: ' + todayDate)
+    
     //console.log('FORM VALID OR NAH?? ' + validateFields())
 
     const listItems = props.availableTimes?.map((number, i) =>
         <option key={i}>{number}</option>
     );
 
-        console.log('Passed times: ' + props.availableTimes)
-        console.log('Date: ' + booking.date + ', ' + 'Time: ' + booking.time)
+        //console.log('Passed times: ' + props.availableTimes)
+        //console.log('Date: ' + booking.date + ', ' + 'Time: ' + booking.time)
 
         const handleSubmit = (e) => {
             e.preventDefault();
@@ -41,7 +47,7 @@ function BookingForm(props) {
     return (
         <form className="booking-form gap-24" onSubmit={handleSubmit}>
 
-            <div>
+            <div className="input">
                 <label htmlFor="res-date">Choose date</label>
                 <input type="date" id="res-date"
                     value={booking.date}
@@ -59,9 +65,9 @@ function BookingForm(props) {
             </div>
 
 
-            <div>
+            <div className="input">
                 <label htmlFor="res-time">Choose time</label>
-                <select id="res-time "
+                <select id="res-time" className="input-field"
                     value={booking.time}
                     onChange={e => {
                         setBooking({
@@ -75,14 +81,14 @@ function BookingForm(props) {
                 </select>
             </div>
 
-            <div>
+            <div className="input">
                 <label htmlFor="partySize">Number of guests</label>
                 <input
                     type="number"
                     placeholder="1"
                     min="1"
                     max="10"
-                    id="guests"
+                    id="partySize"
                     value={booking.partySize}
                     onChange={e => {
                         setBooking({
@@ -93,9 +99,9 @@ function BookingForm(props) {
                 />
             </div>
 
-            <div>
+            <div className="input">
                 <label htmlFor="occasion">Occasion</label>
-                <select id="occasion"
+                <select id="occasion"  className="input-field"
                     value={booking.occasion}
                     onChange={e => {
                         setBooking({
@@ -110,8 +116,11 @@ function BookingForm(props) {
                    <option>Anniversary</option>
                 </select>
             </div>
+           {errorTime && <div className="error-message">
+                Whoops, please fix the errors above.
+            </div>}
 
-            <button aria-label="Close" className="button" type="submit" disabled={!validateFields()}>Make Your reservation</button>
+            <button aria-label="Close" className="button button-full-width" type="submit" disabled={!validateFields()}>Make Your reservation</button>
         </form>
     );
   }
